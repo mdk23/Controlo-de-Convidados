@@ -65,7 +65,7 @@ export function SeatModal({ m, c, mesaBy, idx, open, close }: ModalProps & { m: 
 
   if (!mesa) return null;
   return (
-    <Modal onClose={close} onSave={save}>
+    <Modal onClose={close} onSave={save} wide>
       <h3>
         Mesa {m} · {mesa.nome}
       </h3>
@@ -89,13 +89,15 @@ export function SeatModal({ m, c, mesaBy, idx, open, close }: ModalProps & { m: 
           </select>
         </div>
       </div>
-      <div className="field">
-        <label htmlFor="f_nome">{tipo === "convidado" ? "Nome do convidado" : "Nome do acompanhante"}</label>
-        <input id="f_nome" value={nome} onChange={(e) => setNome(e.target.value)} placeholder="Nome completo" autoComplete="off" />
-      </div>
-      <div className="field">
-        <label htmlFor="f_tel">{tipo === "convidado" ? "Telefone do convidado" : "Telefone do acompanhante"} (opcional)</label>
-        <input id="f_tel" type="tel" inputMode="tel" value={tel} onChange={(e) => setTel(e.target.value)} placeholder="Ex.: 84 123 4567" autoComplete="off" />
+      <div className="row2 tel">
+        <div className="field">
+          <label htmlFor="f_nome">{tipo === "convidado" ? "Nome do convidado" : "Nome do acompanhante"}</label>
+          <input id="f_nome" value={nome} onChange={(e) => setNome(e.target.value)} placeholder="Nome completo" autoComplete="off" />
+        </div>
+        <div className="field">
+          <label htmlFor="f_tel">Telefone (opcional)</label>
+          <input id="f_tel" type="tel" inputMode="tel" value={tel} onChange={(e) => setTel(e.target.value)} placeholder="Ex.: 84 123 4567" autoComplete="off" />
+        </div>
       </div>
       {tipo === "acompanhante" && host && (
         <p className="hint">
@@ -108,24 +110,26 @@ export function SeatModal({ m, c, mesaBy, idx, open, close }: ModalProps & { m: 
         </p>
       )}
       {canAddComp && (
-        <div className="field">
-          <label htmlFor="f_extra">Traz acompanhante? (opcional)</label>
-          <input id="f_extra" value={extra} onChange={(e) => setExtra(e.target.value)} placeholder="Nome do acompanhante" autoComplete="off" />
+        <div>
+          <div className="row2 tel">
+            <div className="field">
+              <label htmlFor="f_extra">Acompanhante (opcional)</label>
+              <input id="f_extra" value={extra} onChange={(e) => setExtra(e.target.value)} placeholder="Nome do acompanhante" autoComplete="off" />
+            </div>
+            <div className="field">
+              <label htmlFor="f_extra_tel">Telefone (opcional)</label>
+              <input
+                id="f_extra_tel"
+                type="tel"
+                inputMode="tel"
+                value={extraTel}
+                onChange={(e) => setExtraTel(e.target.value)}
+                placeholder="Ex.: 84 123 4567"
+                autoComplete="off"
+              />
+            </div>
+          </div>
           <p className="hint">{extraSeat ? `Fica na cadeira ${extraSeat}.` : "Mesa cheia: não há cadeira livre."}</p>
-        </div>
-      )}
-      {canAddComp && extra.trim() && (
-        <div className="field">
-          <label htmlFor="f_extra_tel">Telefone do acompanhante (opcional)</label>
-          <input
-            id="f_extra_tel"
-            type="tel"
-            inputMode="tel"
-            value={extraTel}
-            onChange={(e) => setExtraTel(e.target.value)}
-            placeholder="Ex.: 84 123 4567"
-            autoComplete="off"
-          />
         </div>
       )}
       <label style={{ display: "flex", gap: 10, alignItems: "center", fontWeight: 600 }}>

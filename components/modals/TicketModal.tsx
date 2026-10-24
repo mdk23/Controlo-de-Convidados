@@ -39,6 +39,7 @@ export function TicketModal({ m, c, mesaBy, idx, close }: ModalProps & { m: numb
       ["Mesa", `${m} · ${mesa.nome}`],
       ["Cadeira", String(p.cadeira)],
       ["Tipo", isAc(p) ? "Acompanhante" : "Convidado"],
+      ...(p.telefone ? ([["Contacto", p.telefone]] as [string, string][]) : []),
       ...(host ? ([["Acompanha", `${host} (cadeira ${p.de})`]] as [string, string][]) : []),
       ...(comp ? ([["Acompanhante", `${comp.nome} (cadeira ${comp.cadeira})`]] as [string, string][]) : []),
       ["Código", p.codigo ?? "—"],

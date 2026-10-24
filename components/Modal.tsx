@@ -39,7 +39,17 @@ export function useBusy(fn: () => Promise<void> | void) {
 }
 
 /** overlay: Esc / click outside closes, Enter in an input saves */
-export function Modal({ onClose, onSave, children }: { onClose: () => void; onSave?: () => void; children: ReactNode }) {
+export function Modal({
+  onClose,
+  onSave,
+  wide,
+  children,
+}: {
+  onClose: () => void;
+  onSave?: () => void;
+  wide?: boolean;
+  children: ReactNode;
+}) {
   const box = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -60,7 +70,7 @@ export function Modal({ onClose, onSave, children }: { onClose: () => void; onSa
   return (
     <div className="overlay" onClick={(e) => e.target === e.currentTarget && onClose()}>
       <div
-        className="modal"
+        className={wide ? "modal wide" : "modal"}
         ref={box}
         role="dialog"
         aria-modal="true"
