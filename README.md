@@ -136,10 +136,10 @@ Errors are thrown as `ConvexError("Portuguese message")` and shown in the dialog
 ## 7. Behaviour checklist
 
 - **Header:** tables · seats, convidados + acompanhantes (1 per chair), people inside x/y with a progress bar.
-- **Search:** results show the table number large, plus table name, chair, guest/companion relation, check-in time and the buttons **Check-in → Transferir → QR → Ver mesa**. Accents are ignored. Searching a QR code also finds the person.
+- **Search:** results show the table number large, plus table name, chair, guest/companion relation, check-in time and the buttons **Check-in → Transferir → Ver mesa**. Accents are ignored. Searching a QR code also finds the person.
 - **Filters:** Todos / Por entrar / Entraram. **Views:** Mesas (always the opening view) / Lista.
 - **Table chips:** Todas · Mesa 1 · Mesa 2 … with `entraram/ocupados`.
-- **Button order on each person:** check-in, transfer (⇄), QR.
+- **Button order on each person:** check-in, transfer (⇄). The QR card opens from the person's dialog ("QR code") and right after registering a new guest.
 - **Register:** pick a free chair, enter the guest's name and optionally "Traz acompanhante?" (shows which chair they'll get). After saving a new guest the QR card opens, with a button to go to the companion's QR.
 - **Transfer:** destination tables without enough free chairs are disabled; the two chairs are chosen for you and can be changed.
 - **QR card:** 640×900 PNG with "A SUA MESA", table number, table name + chair, QR, name, role and code. The QR contains `NEXT_PUBLIC_APP_URL/#c-CODE`. Scanning it at the door opens the app on that person, ready for check-in.

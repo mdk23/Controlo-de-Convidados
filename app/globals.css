@@ -28,10 +28,13 @@ body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
 .wrap{max-width:none;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 header.top{padding-block:28px 8px;display:flex;flex-wrap:wrap;gap:18px 32px;align-items:flex-end;justify-content:space-between}
 h1{font-family:var(--display);font-weight:400;font-size:clamp(28px,5vw,40px);line-height:1.05;margin:0;text-wrap:balance}
-.eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:0}
-.powered{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px 14px;padding:16px 0}
+.eyebrow{font-size:39px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:0}
+header.top .eyebrow{flex-basis:100%;margin-bottom:.25em;transform:translateY(-80%)}
+header.top .stats{margin-left:auto;transform:translateY(70%)}
+.powered{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-start;gap:6px 14px;padding:16px 0}
 .powered-foot{padding-bottom:24px}
-.side .powered{margin-top:400px}
+/* sidebar logo: pinned to the window's bottom-left; .side's max-height leaves 110px for it */
+.side .powered{position:fixed;left:max(24px,env(safe-area-inset-left,0px));bottom:max(12px,env(safe-area-inset-bottom,0px));padding:0}
 @media (min-width:1000px){.powered-foot.has-side{display:none}}
 .powered-by{font-size:19.7px;letter-spacing:.12em;font-weight:700;color:var(--muted)}
 .powered-mark{font-size:64.5px;line-height:1}
@@ -139,7 +142,7 @@ tr.group td{background:var(--sunk);font-weight:700;font-size:13px;padding-block:
 @media (min-width:1000px){
   .wrap{padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px))}
   .wrap.layout.has-side{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,7fr);gap:24px;align-items:start}
-  .side{display:block;position:sticky;top:calc(var(--bar-h,64px) + env(safe-area-inset-top,0px) + 20px);margin-top:20px;max-height:calc(100vh - var(--bar-h,64px) - 40px);overflow-y:auto;scrollbar-width:thin}
+  .side{display:block;position:sticky;top:calc(var(--bar-h,64px) + env(safe-area-inset-top,0px) + 20px);margin-top:20px;max-height:calc(100vh - var(--bar-h,64px) - 40px - 110px);overflow-y:auto;scrollbar-width:thin}
   .tpick-side{padding:0}
   .tpick-side .tpick-panel{margin-top:10px}
   .tpick-side .tpick-grid{max-height:none;overflow:visible;grid-template-columns:repeat(8,minmax(0,1fr));gap:6px}

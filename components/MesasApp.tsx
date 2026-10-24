@@ -3,7 +3,7 @@
 import { useMutation, useQuery } from "convex/react";
 import { Fragment, useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { api } from "@/convex/_generated/api";
-import { IconCheck, IconQr, IconSearch, IconTransfer } from "@/components/icons";
+import { IconCheck, IconSearch, IconTransfer } from "@/components/icons";
 import type { ModalProps, ModalState } from "@/components/Modal";
 import { TablePicker } from "@/components/TablePicker";
 import { useToast } from "@/components/Toast";
@@ -211,12 +211,6 @@ export default function MesasApp() {
         <IconTransfer />
       </button>
     );
-  const qrBtn = (s: Lugar | undefined) =>
-    s && (
-      <button className="icbtn" title="QR code" aria-label={`QR code de ${s.nome}`} onClick={() => open({ kind: "qr", m: s.mesa, c: s.cadeira })}>
-        <IconQr />
-      </button>
-    );
   const seatBtn = (m: number, c: number, children: ReactNode, className = "link") => (
     <button className={className} onClick={() => open({ kind: "seat", m, c })}>
       {children}
@@ -304,7 +298,6 @@ export default function MesasApp() {
                 {s?.entrada && s.entradaHora && <span className="time">{hhmm(s.entradaHora)}</span>}
                 <span className="spacer" />
                 {trBtn(s)}
-                {qrBtn(s)}
               </div>
             </td>
           </tr>,
@@ -427,7 +420,6 @@ export default function MesasApp() {
             <div className="ent">
               {chk(s)}
               {trBtn(s)}
-              {qrBtn(s)}
             </div>
           </div>
         );
@@ -552,9 +544,6 @@ export default function MesasApp() {
                 <button className="btn" onClick={() => open({ kind: "transfer", m: s.mesa, c: transferChair(idx, s) })}>
                   <IconTransfer /> Transferir
                 </button>
-                <button className="btn" onClick={() => open({ kind: "qr", m: s.mesa, c: s.cadeira })}>
-                  <IconQr /> QR
-                </button>
                 <button className="btn" onClick={() => choose(s.mesa, true)}>
                   Ver mesa
                 </button>
@@ -583,9 +572,6 @@ export default function MesasApp() {
   return (
     <>
       <header className="wrap top">
-        <div>
-          <div className="eyebrow">Controlo de convidados</div>
-        </div>
         <div className="stats">
           <div className="stat">
             <div className="n">{mesas.length}</div>
@@ -608,6 +594,7 @@ export default function MesasApp() {
             </div>
           </div>
         </div>
+        <div className="eyebrow">Controlo de convidados</div>
       </header>
 
       <div className="bar" ref={barRef}>
