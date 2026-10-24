@@ -25,7 +25,7 @@ export function TicketModal({ m, c, mesaBy, idx, close }: ModalProps & { m: numb
     const host = hostName(idx, s);
     return isAc(s) ? `Acompanhante${host ? " de " + host : ""}` : "Convidado";
   };
-  const status = (s: Lugar) => (s.entrada ? `Entrou ${hhmm(s.entradaHora)}`.trim() : "Por entrar");
+  const status = (s: Lugar) => (s.entrada ? (s.entradaHora ? `Entrou às - ${hhmm(s.entradaHora)}` : "Entrou") : "Por entrar");
   const row = (k: string, v: string) => `${(k + ":").padEnd(16)}${v}`;
 
   // person picked but since removed or moved: back to the table
@@ -66,7 +66,7 @@ export function TicketModal({ m, c, mesaBy, idx, close }: ModalProps & { m: numb
       ...rows.map(([k, v]) => row(k, v)),
       LINE,
       ...(people.length
-        ? people.map((s) => `${s.cadeira}. ${s.nome} (${who(s)})${s.entrada ? " ✓ " + hhmm(s.entradaHora) : ""}`.trimEnd())
+        ? people.map((s) => `${s.cadeira}. ${s.nome} (${who(s)})${s.entrada ? " ✓ " + status(s) : ""}`)
         : ["Sem convidados"]),
       LINE,
       FOOT,
