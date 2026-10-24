@@ -8,7 +8,7 @@ export type ModalState =
   | { kind: "table"; m: number | null }
   | { kind: "transfer"; m: number; c: number }
   | { kind: "import" }
-  | { kind: "ticket"; m: number }
+  | { kind: "ticket"; m: number; c?: number }
   | { kind: "qr"; m: number; c: number; nextC?: number | null };
 
 /** live data + navigation every modal gets */

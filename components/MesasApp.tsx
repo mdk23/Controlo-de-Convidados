@@ -3,7 +3,7 @@
 import { useMutation, useQuery } from "convex/react";
 import { Fragment, useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { api } from "@/convex/_generated/api";
-import { IconCheck, IconSearch, IconTransfer } from "@/components/icons";
+import { IconCheck, IconSearch, IconTicket, IconTransfer } from "@/components/icons";
 import type { ModalProps, ModalState } from "@/components/Modal";
 import { TablePicker } from "@/components/TablePicker";
 import { useToast } from "@/components/Toast";
@@ -212,6 +212,17 @@ export default function MesasApp() {
         <IconTransfer />
       </button>
     );
+  const tkBtn = (s: Lugar | undefined) =>
+    s && (
+      <button
+        className="icbtn"
+        title="Ver ticket"
+        aria-label={`Ver ticket de ${s.nome}`}
+        onClick={() => open({ kind: "ticket", m: s.mesa, c: s.cadeira })}
+      >
+        <IconTicket />
+      </button>
+    );
   const seatBtn = (m: number, c: number, children: ReactNode, className = "link") => (
     <button className={className} onClick={() => open({ kind: "seat", m, c })}>
       {children}
@@ -299,6 +310,7 @@ export default function MesasApp() {
                 {s?.entrada && s.entradaHora && <span className="time">{hhmm(s.entradaHora)}</span>}
                 <span className="spacer" />
                 {trBtn(s)}
+                {tkBtn(s)}
               </div>
             </td>
           </tr>,
@@ -421,6 +433,7 @@ export default function MesasApp() {
             <div className="ent">
               {chk(s)}
               {trBtn(s)}
+              {tkBtn(s)}
             </div>
           </div>
         );
@@ -672,7 +685,7 @@ export default function MesasApp() {
           {modal.kind === "table" && <TableModal {...mp} m={modal.m} />}
           {modal.kind === "transfer" && <TransferModal {...mp} m={modal.m} c={modal.c} />}
           {modal.kind === "import" && <ImportModal {...mp} />}
-          {modal.kind === "ticket" && <TicketModal {...mp} m={modal.m} />}
+          {modal.kind === "ticket" && <TicketModal {...mp} m={modal.m} c={modal.c} />}
           {modal.kind === "qr" && <QrModal {...mp} m={modal.m} c={modal.c} nextC={modal.nextC} />}
         </Fragment>
       )}

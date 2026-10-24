@@ -15,6 +15,7 @@ export default defineSchema({
     mesa: v.number(),
     cadeira: v.number(),
     nome: v.string(),
+    telefone: v.optional(v.string()),
     tipo,
     de: v.union(v.number(), v.null()), // acompanhante: chair of the guest they accompany
     codigo: v.optional(v.string()), // 6-char QR code, never changes

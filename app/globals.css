@@ -219,7 +219,7 @@ tr.group td{background:var(--sunk);font-weight:700;font-size:13px;padding-block:
 .ticket-rows dt{color:var(--muted)}
 .ticket-rows dd{margin:0;font-weight:700;font-family:var(--mono);font-variant-numeric:tabular-nums}
 .ticket-people{list-style:none;margin:0;padding:12px 0;border-bottom:1px solid var(--ink);display:flex;flex-direction:column;gap:8px}
-.ticket-people button{width:100%;display:flex;justify-content:space-between;gap:12px;text-align:left;border:0;background:none;font:inherit;color:inherit;padding:6px 8px;margin:-6px -8px;width:calc(100% + 16px);border-radius:8px;cursor:pointer}
+.ticket-people button{display:flex;justify-content:space-between;gap:12px;text-align:left;border:0;background:none;font:inherit;color:inherit;padding:6px 8px;margin:-6px -8px;width:calc(100% + 16px);border-radius:8px;cursor:pointer}
 .ticket-people button:hover{background:var(--sunk)}
 .ticket-total.solo{border-top:1px solid var(--ink)}
 .ticket-total b.out{color:var(--muted)}
@@ -228,4 +228,5 @@ tr.group td{background:var(--sunk);font-weight:700;font-size:13px;padding-block:
 .ticket-people b.in{color:var(--ok)}
 .ticket-total{display:flex;justify-content:space-between;align-items:baseline;padding-top:12px;font-weight:800}
 .ticket-total b{font-family:var(--mono);font-size:20px;color:var(--ok)}
-.ticket-foot{text-align:center;color:var(--muted);margin-top:16px}
+.ticket-foot{display:flex;justify-content:center;align-items:center;gap:8px;color:var(--muted);margin-top:16px}
+.ticket-foot .powered-mark{font-size:28px}

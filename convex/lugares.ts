@@ -45,7 +45,9 @@ export const add = mutation({
     cadeira: v.number(),
     nome: v.string(),
     entrada: v.boolean(),
+    telefone: v.optional(v.string()),
     acompanhante: v.optional(v.string()),
+    acompanhanteTelefone: v.optional(v.string()),
   },
   handler: async (ctx, a) => {
     const total = seatCount(await requireMesa(ctx, a.mesa));
@@ -60,6 +62,7 @@ export const add = mutation({
       mesa: a.mesa,
       cadeira: a.cadeira,
       nome,
+      telefone: cleanTel(a.telefone),
       tipo: "convidado",
       de: null,
       codigo: await newCodigo(ctx),
@@ -71,6 +74,7 @@ export const add = mutation({
         mesa: a.mesa,
         cadeira: acompCadeira,
         nome: extra,
+        telefone: cleanTel(a.acompanhanteTelefone),
         tipo: "acompanhante",
         de: a.cadeira,
         codigo: await newCodigo(ctx),
@@ -90,7 +94,9 @@ export const update = mutation({
     novaCadeira: v.number(),
     nome: v.string(),
     entrada: v.boolean(),
+    telefone: v.optional(v.string()),
     acompanhante: v.optional(v.string()),
+    acompanhanteTelefone: v.optional(v.string()),
   },
   handler: async (ctx, a) => {
     const total = seatCount(await requireMesa(ctx, a.mesa));
@@ -109,6 +115,7 @@ export const update = mutation({
     await ctx.db.patch(s._id, {
       cadeira: a.novaCadeira,
       nome,
+      telefone: cleanTel(a.telefone),
       codigo: s.codigo ?? (await newCodigo(ctx)),
       entrada: a.entrada,
       entradaHora: a.entrada ? (s.entrada ? s.entradaHora : Date.now()) : null,
@@ -121,6 +128,7 @@ export const update = mutation({
         mesa: a.mesa,
         cadeira: acompCadeira,
         nome: extra,
+        telefone: cleanTel(a.acompanhanteTelefone),
         tipo: "acompanhante",
         de: a.novaCadeira,
         codigo: await newCodigo(ctx),
@@ -229,6 +237,7 @@ export const importar = mutation({
         mesa: l.mesa,
         cadeira: l.cadeira,
         nome,
+        ...(old?.telefone ? { telefone: old.telefone } : {}),
         tipo: l.tipo,
         de,
         codigo: old?.codigo ?? (await newCodigo(ctx)),
@@ -304,6 +313,9 @@ export const importarConvidados = mutation({
     return { pessoas, ignorados };
   },
 });
+
+/** empty = no phone (undefined removes the field on patch) */
+const cleanTel = (t: string | undefined) => t?.trim().replace(/\s+/g, " ") || undefined;
 
 const simple = (s: string) =>
   s

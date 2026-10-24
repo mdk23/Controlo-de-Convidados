@@ -3,15 +3,16 @@
 import { useState } from "react";
 import { Modal, type ModalProps } from "@/components/Modal";
 import { useToast } from "@/components/Toast";
-import { chairs, companionOf, hhmm, hostName, isAc, seatCount, seatOf, type Lugar } from "@/lib/util";
+import { drawTicket, loadTicketFonts, type TicketData } from "@/lib/ticketCard";
+import { chairs,companionOf, hhmm, hostName, isAc, seatCount, seatOf, type Lugar } from "@/lib/util";
 
 const LINE = "-".repeat(32);
 const FOOT = "Desenvolvido por Xalima";
 
 /** receipt-style summary of one table, or of one person on it (click a name); copied as plain text */
-export function TicketModal({ m, mesaBy, idx, close }: ModalProps & { m: number }) {
+export function TicketModal({ m, c, mesaBy, idx, close }: ModalProps & { m: number; c?: number }) {
   const toast = useToast();
-  const [pick, setPick] = useState<number | null>(null);
+  const [pick, setPick] = useState<number | null>(c ?? null);
   const mesa = mesaBy.get(m);
   if (!mesa) return null;
 
@@ -44,9 +45,9 @@ export function TicketModal({ m, mesaBy, idx, close }: ModalProps & { m: number 
     ];
     title = p.nome;
     sub = `Mesa ${m} · Cadeira ${p.cadeira}`;
-    totalLabel = "ENTRADA";
+    totalLabel = "ESTADO";
     totalValue = status(p);
-    text = [p.nome.toUpperCase(), sub, LINE, ...rows.map(([k, v]) => row(k, v)), LINE, row("Entrada", totalValue), LINE, FOOT].join("\n");
+    text = [p.nome.toUpperCase(), sub, LINE, ...rows.map(([k, v]) => row(k, v)), LINE, row("Estado", totalValue), LINE, FOOT].join("\n");
   } else {
     const inn = people.filter((s) => s.entrada).length;
     const conv = people.filter((s) => !isAc(s)).length;
@@ -76,11 +77,37 @@ export function TicketModal({ m, mesaBy, idx, close }: ModalProps & { m: number 
     ].join("\n");
   }
 
-  const copy = () => {
-    navigator.clipboard
-      ?.writeText(text)
-      .then(() => toast("Ticket copiado"))
-      .catch(() => toast("Não foi possível copiar."));
+  const card: TicketData = {
+    title,
+    sub,
+    rows,
+    people: p
+      ? undefined
+      : people.map((s) => ({ name: `${s.cadeira}. ${s.nome}`, role: who(s), status: status(s), ok: s.entrada })),
+    totalLabel,
+    totalValue,
+    totalOk: p ? p.entrada : true,
+  };
+
+  // image of the ticket (no buttons); falls back to the text when the browser can't copy images
+  const copy = async () => {
+    try {
+      const png = (async () => {
+        await loadTicketFonts();
+        const cv = drawTicket(card);
+        return new Promise<Blob>((r, j) => cv.toBlob((b) => (b ? r(b) : j()), "image/png"));
+      })();
+      // Safari wants the ClipboardItem created right away, with the image still pending
+      await navigator.clipboard.write([new ClipboardItem({ "image/png": png })]);
+      toast("Ticket copiado. Cole no WhatsApp.");
+    } catch {
+      try {
+        await navigator.clipboard.writeText(text);
+        toast("Este navegador não deixa copiar imagens. Copiado como texto.");
+      } catch {
+        toast("Não foi possível copiar.");
+      }
+    }
   };
 
   return (
@@ -121,7 +148,13 @@ export function TicketModal({ m, mesaBy, idx, close }: ModalProps & { m: number 
           <span>{totalLabel}</span>
           <b className={p && !p.entrada ? "out" : undefined}>{totalValue}</b>
         </div>
-        <div className="ticket-foot">{FOOT}</div>
+        <div className="ticket-foot">
+          Desenvolvido por
+          <span className="powered-mark">
+            <span className="x">X</span>
+            <span className="alima">alima</span>
+          </span>
+        </div>
       </div>
       <div className="actions">
         {p && (

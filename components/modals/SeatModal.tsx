@@ -20,7 +20,9 @@ export function SeatModal({ m, c, mesaBy, idx, open, close }: ModalProps & { m: 
   const [isNew] = useState(!s);
   const [cad, setCad] = useState(c);
   const [nome, setNome] = useState(s?.nome ?? "");
+  const [tel, setTel] = useState(s?.telefone ?? "");
   const [extra, setExtra] = useState("");
+  const [extraTel, setExtraTel] = useState("");
   const [ent, setEnt] = useState(!!s?.entrada);
   const [err, setErr] = useState("");
 
@@ -37,9 +39,10 @@ export function SeatModal({ m, c, mesaBy, idx, open, close }: ModalProps & { m: 
     if (!n) return setErr("Escreva o nome.");
     if (x && !extraSeat) return setErr("Não há cadeira livre nesta mesa para o acompanhante.");
     try {
+      const phones = { telefone: tel, acompanhante: x || undefined, acompanhanteTelefone: x ? extraTel : undefined };
       const r = isNew
-        ? await add({ mesa: m, cadeira: cad, nome: n, entrada: ent, acompanhante: x || undefined })
-        : await update({ mesa: m, cadeira: c, novaCadeira: cad, nome: n, entrada: ent, acompanhante: x || undefined });
+        ? await add({ mesa: m, cadeira: cad, nome: n, entrada: ent, ...phones })
+        : await update({ mesa: m, cadeira: c, novaCadeira: cad, nome: n, entrada: ent, ...phones });
       toast(r.acompCadeira ? `Guardado · acompanhante na cadeira ${r.acompCadeira}` : "Guardado");
       if (isNew) open({ kind: "qr", m, c: cad, nextC: r.acompCadeira });
       else close();
@@ -90,6 +93,10 @@ export function SeatModal({ m, c, mesaBy, idx, open, close }: ModalProps & { m: 
         <label htmlFor="f_nome">{tipo === "convidado" ? "Nome do convidado" : "Nome do acompanhante"}</label>
         <input id="f_nome" value={nome} onChange={(e) => setNome(e.target.value)} placeholder="Nome completo" autoComplete="off" />
       </div>
+      <div className="field">
+        <label htmlFor="f_tel">{tipo === "convidado" ? "Telefone do convidado" : "Telefone do acompanhante"} (opcional)</label>
+        <input id="f_tel" type="tel" inputMode="tel" value={tel} onChange={(e) => setTel(e.target.value)} placeholder="Ex.: 84 123 4567" autoComplete="off" />
+      </div>
       {tipo === "acompanhante" && host && (
         <p className="hint">
           Acompanhante de <b>{host}</b> (cadeira {s!.de}).
@@ -105,6 +112,20 @@ export function SeatModal({ m, c, mesaBy, idx, open, close }: ModalProps & { m: 
           <label htmlFor="f_extra">Traz acompanhante? (opcional)</label>
           <input id="f_extra" value={extra} onChange={(e) => setExtra(e.target.value)} placeholder="Nome do acompanhante" autoComplete="off" />
           <p className="hint">{extraSeat ? `Fica na cadeira ${extraSeat}.` : "Mesa cheia: não há cadeira livre."}</p>
+        </div>
+      )}
+      {canAddComp && extra.trim() && (
+        <div className="field">
+          <label htmlFor="f_extra_tel">Telefone do acompanhante (opcional)</label>
+          <input
+            id="f_extra_tel"
+            type="tel"
+            inputMode="tel"
+            value={extraTel}
+            onChange={(e) => setExtraTel(e.target.value)}
+            placeholder="Ex.: 84 123 4567"
+            autoComplete="off"
+          />
         </div>
       )}
       <label style={{ display: "flex", gap: 10, alignItems: "center", fontWeight: 600 }}>
