@@ -11,6 +11,7 @@ import { ImportModal } from "@/components/modals/ImportModal";
 import { QrModal } from "@/components/modals/QrModal";
 import { SeatModal } from "@/components/modals/SeatModal";
 import { TableModal } from "@/components/modals/TableModal";
+import { TicketModal } from "@/components/modals/TicketModal";
 import { TransferModal } from "@/components/modals/TransferModal";
 import {
   chairs,
@@ -436,9 +437,14 @@ export default function MesasApp() {
                 {occ}/{seatCount(m)} ocupados · {inn} entraram
               </div>
             </div>
-            <button className="btn" onClick={() => open({ kind: "table", m: m.numero })}>
-              Editar
-            </button>
+            <div style={{ display: "flex", gap: 8 }}>
+              <button className="btn" onClick={() => open({ kind: "ticket", m: m.numero })}>
+                Ticket
+              </button>
+              <button className="btn" onClick={() => open({ kind: "table", m: m.numero })}>
+                Editar
+              </button>
+            </div>
           </div>
           <div className="round">{roundSvg(m)}</div>
           <div className="seats">{list}</div>
@@ -666,6 +672,7 @@ export default function MesasApp() {
           {modal.kind === "table" && <TableModal {...mp} m={modal.m} />}
           {modal.kind === "transfer" && <TransferModal {...mp} m={modal.m} c={modal.c} />}
           {modal.kind === "import" && <ImportModal {...mp} />}
+          {modal.kind === "ticket" && <TicketModal {...mp} m={modal.m} />}
           {modal.kind === "qr" && <QrModal {...mp} m={modal.m} c={modal.c} nextC={modal.nextC} />}
         </Fragment>
       )}
