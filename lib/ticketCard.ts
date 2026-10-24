@@ -168,7 +168,7 @@ export function drawTicket(t: TicketData) {
   x.font = 'italic 28px "Agatha Italic", cursive';
   x.fillText("X", fx, y);
   fx += xw;
-  x.fillStyle = "#2563EB";
+  x.fillStyle = "#1E3A8A";
   x.font = '28px "RC", sans-serif';
   x.fillText("alima", fx, y);
   return cv;

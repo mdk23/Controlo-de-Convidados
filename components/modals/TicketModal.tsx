@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Modal, type ModalProps } from "@/components/Modal";
 import { useToast } from "@/components/Toast";
 import { drawTicket, loadTicketFonts, type TicketData } from "@/lib/ticketCard";
-import { chairs,companionOf, hhmm, hostName, isAc, seatCount, seatOf, type Lugar } from "@/lib/util";
+import { chairs, hhmm, hostName, isAc, seatCount, seatOf, type Lugar } from "@/lib/util";
 
 const LINE = "-".repeat(32);
 const FOOT = "Desenvolvido por Xalima";
@@ -33,15 +33,10 @@ export function TicketModal({ m, c, mesaBy, idx, close }: ModalProps & { m: numb
 
   let title: string, sub: string, rows: [string, string][], text: string, totalLabel: string, totalValue: string;
   if (p) {
-    const comp = isAc(p) ? null : companionOf(idx, m, p.cadeira);
-    const host = hostName(idx, p);
     rows = [
       ["Mesa", `${m} · ${mesa.nome}`],
       ["Cadeira", String(p.cadeira)],
-      ["Tipo", isAc(p) ? "Acompanhante" : "Convidado"],
       ...(p.telefone ? ([["Contacto", p.telefone]] as [string, string][]) : []),
-      ...(host ? ([["Acompanha", `${host} (cadeira ${p.de})`]] as [string, string][]) : []),
-      ...(comp ? ([["Acompanhante", `${comp.nome} (cadeira ${comp.cadeira})`]] as [string, string][]) : []),
       ["Código", p.codigo ?? "—"],
     ];
     title = p.nome;
