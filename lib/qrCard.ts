@@ -13,9 +13,9 @@ export function drawCard(p: Lugar & { codigo: string }, mesaNome: string | undef
   const serif = display.style.fontFamily,
     sans = body.style.fontFamily,
     code = mono.style.fontFamily;
-  const ink = "#17202E",
-    muted = "#5B6676",
-    gold = "#94661C";
+  const ink = "#2C4A6B",
+    muted = "#6B5E4E",
+    gold = "#8C6A28";
   x.fillStyle = "#FFFFFF";
   x.fillRect(0, 0, W, H);
   x.strokeStyle = gold;

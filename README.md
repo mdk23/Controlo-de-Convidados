@@ -24,7 +24,7 @@ mesas-cadeiras-app/
 │  ├─ layout.tsx               fonts, metadata, Convex provider
 │  ├─ page.tsx                 renders <MesasApp/>
 │  ├─ ConvexClientProvider.tsx ConvexReactClient (uses NEXT_PUBLIC_CONVEX_URL) + toasts
-│  └─ globals.css              the app's CSS (light + dark)
+│  └─ globals.css              the app's CSS (wedding palette, light only)
 ├─ components/
 │  ├─ MesasApp.tsx             header, stats, search, filters, table chips, Lista / Mesas views, search results
 │  ├─ Modal.tsx                overlay (Esc / click outside closes, Enter saves)
